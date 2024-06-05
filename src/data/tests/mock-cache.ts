@@ -18,6 +18,11 @@ export class CacheStoreSpy implements ICacheStore {
     this.insertValues = value as Array<SavePurchases.Params>;
   }
 
+  replace(key: string, value: unknown): void {
+    this.delete(key);
+    this.insert(key, value);
+  }
+
   simulateDeleteError(): void {
     jest.spyOn(CacheStoreSpy.prototype, "delete").mockImplementationOnce(() => {
       this.actions.push(CacheStoreSpy.Action.delete);
