@@ -6,7 +6,7 @@ type SutType = {
   sut: LocalLoadPurchases;
 };
 
-const makeSut = (timestamp = new Date()) => {
+const makeSut = (timestamp = new Date()): SutType => {
   const cacheStore = new CacheStoreSpy();
   const sut = new LocalLoadPurchases(cacheStore, timestamp);
 
@@ -18,5 +18,13 @@ describe("LocalLoadPurchases Suite Test", () => {
     const { cacheStore } = makeSut();
 
     expect(cacheStore.actions).toEqual([]);
+  });
+
+  it("should call correct key on load", async () => {
+    const { cacheStore, sut } = makeSut();
+    await sut.loadAll();
+
+    expect(cacheStore.actions).toEqual([CacheStoreSpy.Action.fetch]);
+    expect(cacheStore.fetchKey).toBe("purchases");
   });
 });

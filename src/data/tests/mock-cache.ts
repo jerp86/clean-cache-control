@@ -4,12 +4,18 @@ import { ICacheStore } from "../protocols/cache";
 export class CacheStoreSpy implements ICacheStore {
   actions: Array<CacheStoreSpy.Action> = [];
   deleteKey: string;
+  fetchKey: string;
   insertKey: string;
   insertValues: Array<SavePurchases.Params>;
 
   delete(key: string): void {
     this.actions.push(CacheStoreSpy.Action.delete);
     this.deleteKey = key;
+  }
+
+  fetch(key: string): void {
+    this.actions.push(CacheStoreSpy.Action.fetch);
+    this.fetchKey = key;
   }
 
   insert(key: string, value: unknown): void {
@@ -41,6 +47,7 @@ export class CacheStoreSpy implements ICacheStore {
 export namespace CacheStoreSpy {
   export enum Action {
     delete,
+    fetch,
     insert,
   }
 }
