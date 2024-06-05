@@ -38,17 +38,11 @@ describe("LocalSavePurchases Suite Tests", () => {
     expect(cacheStore.deleteCallsCount).toBe(0);
   });
 
-  it("should delete cache on sut.delete", async () => {
+  it("should delete cache on sut.save", async () => {
     const { cacheStore, sut } = makeSut();
     await sut.save();
 
     expect(cacheStore.deleteCallsCount).toBe(1);
-  });
-
-  it("should call delete with correct key", async () => {
-    const { cacheStore, sut } = makeSut();
-    await sut.save();
-
     expect(cacheStore.key).toBe("purchases");
   });
 });
