@@ -7,5 +7,9 @@
   },
   "author": "José Eduardo Rodrigues Pinto <jerp.dev@gmail.com>",
   "license": "MIT",
-  "description": "Projeto de acompanhamento da playlist Typescript, TDD e Clean Architecture do Rodrigo Manguinho (Mango)"
+  "description": "Projeto de acompanhamento da playlist Typescript, TDD e Clean Architecture do Rodrigo Manguinho (Mango)",
+  "devDependencies": {
+    "@types/node": "^20.14.2",
+    "typescript": "^5.4.5"
+  }
 }
