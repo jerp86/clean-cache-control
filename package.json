@@ -9,6 +9,7 @@
   "license": "MIT",
   "description": "Projeto de acompanhamento da playlist Typescript, TDD e Clean Architecture do Rodrigo Manguinho (Mango)",
   "devDependencies": {
+    "@faker-js/faker": "^8.4.1",
     "@types/jest": "^29.5.12",
     "@types/node": "^20.14.2",
     "jest": "^29.7.0",
