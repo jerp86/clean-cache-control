@@ -14,26 +14,30 @@ const makeSut = (): SutTypes => {
 };
 
 describe("LocalSavePurchases Suite Tests", () => {
-  it("should not delete cache on sut.init", () => {
+  it("should not delete or insert cache on sut.init", () => {
     const { cacheStore } = makeSut();
-    expect(cacheStore.deleteCallsCount).toBe(0);
+    expect(cacheStore.messages).toEqual([]);
   });
 
   it("should delete cache on sut.save", async () => {
     const { cacheStore, sut } = makeSut();
     await sut.save(mockPurchases());
 
-    expect(cacheStore.deleteCallsCount).toBe(1);
+    expect(cacheStore.messages).toEqual([
+      CacheStoreSpy.Message.delete,
+      CacheStoreSpy.Message.insert,
+    ]);
     expect(cacheStore.deleteKey).toBe("purchases");
   });
 
-  it("should not insert new Cache if delete fails", async () => {
+  it("should not insert new Cache if delete fails", () => {
     const { cacheStore, sut } = makeSut();
     cacheStore.simulateDeleteError();
     const promise = sut.save(mockPurchases());
 
+    expect(cacheStore.messages).toEqual([CacheStoreSpy.Message.delete]);
+    expect(cacheStore.messages).not.toContain(CacheStoreSpy.Message.insert);
     expect(promise).rejects.toThrow();
-    expect(cacheStore.insertCallsCount).toBe(0);
   });
 
   it("should insert new Cache if delete succeeds", async () => {
@@ -41,8 +45,10 @@ describe("LocalSavePurchases Suite Tests", () => {
     const purchases = mockPurchases();
     await sut.save(purchases);
 
-    expect(cacheStore.deleteCallsCount).toBe(1);
-    expect(cacheStore.insertCallsCount).toBe(1);
+    expect(cacheStore.messages).toEqual([
+      CacheStoreSpy.Message.delete,
+      CacheStoreSpy.Message.insert,
+    ]);
     expect(cacheStore.insertKey).toBe("purchases");
     expect(cacheStore.insertValues).toEqual(purchases);
   });
@@ -52,6 +58,10 @@ describe("LocalSavePurchases Suite Tests", () => {
     cacheStore.simulateInsertError();
     const promise = sut.save(mockPurchases());
 
+    expect(cacheStore.messages).toEqual([
+      CacheStoreSpy.Message.delete,
+      CacheStoreSpy.Message.insert,
+    ]);
     expect(promise).rejects.toThrow();
   });
 });
