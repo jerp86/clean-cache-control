@@ -64,12 +64,9 @@ describe("LocalLoadPurchases Suite Test", () => {
     };
     const purchases = await sut.loadAll();
 
-    expect(cacheStore.actions).toEqual([
-      CacheStoreSpy.Action.fetch,
-      CacheStoreSpy.Action.delete,
-    ]);
+    expect(cacheStore.actions).not.toContainEqual(CacheStoreSpy.Action.delete);
+    expect(cacheStore.actions).toEqual([CacheStoreSpy.Action.fetch]);
     expect(cacheStore.fetchKey).toBe(KEY);
-    expect(cacheStore.deleteKey).toBe(KEY);
     expect(purchases).toEqual([]);
   });
 
@@ -82,12 +79,9 @@ describe("LocalLoadPurchases Suite Test", () => {
     };
     const purchases = await sut.loadAll();
 
-    expect(cacheStore.actions).toEqual([
-      CacheStoreSpy.Action.fetch,
-      CacheStoreSpy.Action.delete,
-    ]);
+    expect(cacheStore.actions).not.toContainEqual(CacheStoreSpy.Action.delete);
+    expect(cacheStore.actions).toEqual([CacheStoreSpy.Action.fetch]);
     expect(cacheStore.fetchKey).toBe(KEY);
-    expect(cacheStore.deleteKey).toBe(KEY);
     expect(purchases).toEqual([]);
   });
 
