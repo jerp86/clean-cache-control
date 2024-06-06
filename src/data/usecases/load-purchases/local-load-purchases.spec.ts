@@ -36,7 +36,7 @@ describe("LocalLoadPurchases Suite Test", () => {
     expect(purchases).toEqual([]);
   });
 
-  it("Should return a list of purchases if cache is less than 3 days old", async () => {
+  it("should return a list of purchases if cache is less than 3 days old", async () => {
     const currentDate = new Date();
     const timestamp = new Date(currentDate);
     timestamp.setDate(timestamp.getDate() - 3);
@@ -53,7 +53,7 @@ describe("LocalLoadPurchases Suite Test", () => {
     expect(purchases).toEqual(cacheStore.fetchResult?.value);
   });
 
-  it("Should return an empty list if cache is more than 3 days old", async () => {
+  it("should return an empty list if cache is more than 3 days old", async () => {
     const currentDate = new Date();
     const timestamp = new Date(currentDate);
     timestamp.setDate(timestamp.getDate() - 3);
@@ -74,7 +74,7 @@ describe("LocalLoadPurchases Suite Test", () => {
     expect(purchases).toEqual([]);
   });
 
-  it("Should return an empty list if cache is 3 days old", async () => {
+  it("should return an empty list if cache is 3 days old", async () => {
     const currentDate = new Date();
     const timestamp = new Date(currentDate);
     timestamp.setDate(timestamp.getDate() - 3);
@@ -91,6 +91,22 @@ describe("LocalLoadPurchases Suite Test", () => {
     ]);
     expect(cacheStore.fetchKey).toBe(KEY);
     expect(cacheStore.deleteKey).toBe(KEY);
+    expect(purchases).toEqual([]);
+  });
+
+  it("should return an empty list if cache is empty", async () => {
+    const currentDate = new Date();
+    const timestamp = new Date(currentDate);
+    timestamp.setDate(timestamp.getDate() - 3);
+    timestamp.setSeconds(timestamp.getSeconds() + 1);
+    const { cacheStore, sut } = makeSut(currentDate);
+    cacheStore.fetchResult = {
+      timestamp,
+      value: [],
+    };
+    const purchases = await sut.loadAll();
+    expect(cacheStore.actions).toEqual([CacheStoreSpy.Action.fetch]);
+    expect(cacheStore.fetchKey).toBe(KEY);
     expect(purchases).toEqual([]);
   });
 });
