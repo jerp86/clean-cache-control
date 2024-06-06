@@ -18,11 +18,9 @@ export class LocalLoadPurchases implements SavePurchases, LoadPurchases {
   async loadAll(): Promise<Array<LoadPurchases.Result>> {
     try {
       const cache = this.cacheStore.fetch(this.key);
-      if (CachePolicy.validate(cache.timestamp, this.currentDate)) {
-        return cache?.value;
-      }
+      const isValid = CachePolicy.validate(cache.timestamp, this.currentDate);
 
-      return [];
+      return isValid ? cache?.value : [];
     } catch (error) {
       return [];
     }
